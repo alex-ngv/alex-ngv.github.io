@@ -1,0 +1,43 @@
+
+.container {
+  width: 450px;
+  height: 450px;
+  margin: 50px auto;
+}
+
+.cell {
+  color: blue;
+  width: 150px;
+  height: 150px;
+  float: left;
+  border: 10px dotted blue;
+  box-sizing: border-box;
+  font-size: 100px;
+  text-align: center;
+  line-height: 150px;
+  font-family: 'Press Start 2P', sans-serif;
+}
+.cell2 {
+  color: orange;
+  width: 150px;
+  height: 150px;
+  float: left;
+  border: 10px dotted blue;
+  box-sizing: border-box;
+  font-size: 100px;
+  text-align: center;
+  line-height: 150px;
+  font-family: 'Press Start 2P', sans-serif;
+}
+
+#id1, #id3, #id5, #id7, #id9 {
+  background-color: gold;
+}
+#id2, #id4, #id6, #id8, #id10 {
+  background-color: gray;
+}
+
+.off {
+  display: none;
+
+}
