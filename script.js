@@ -157,6 +157,7 @@ var gameStart = function(){
   pushBoard();//push the board to the player.
   part1(); //and run the game on the random board.
   //set all the info!
+  pointsCounter = 0;
   $moves.text('Moves - '+moves)
   $level.text('Level - '+level)
   $nextNumberCell.text('Next - '+$nextNumber);
