@@ -276,7 +276,7 @@ var moveDown = function(array){
     array.shift()
     return(array)
 }
-
+//the code snippet below was taken form here: http://viralpatel.net/blogs/jquery-get-text-element-without-child-element/
 //this gets the div data and turns it into arrays.
 var getBoard = function(){
   for (var i =0; i < 7;i++){
