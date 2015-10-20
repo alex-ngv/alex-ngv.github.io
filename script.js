@@ -19,6 +19,7 @@ var $setNextNumber = function(){
 var $startButton = $('.myButton') //GameStart button div.
 var $moves = $('.moves') //the div that shows how many moves are left until the next level
 var $level=$('.level') // the div that shows the level of the game
+var $combo=$('.combo') //comboCounter
 var $containerDivs = $('.container div'); //the game board divs
 var $nextNumberCell = $('.nextmove'); //the div that shows what the next piece that drops will be
 var counterDiv = $('.points');//the div that displays points
@@ -67,6 +68,7 @@ var gameState=0;//dubious game state variable
     $nextNumber=$setNextNumber();
     $nextNumberCell.text('Next - '+$nextNumber);
     noClick = 0; //dubious
+    $combo.text('Combo - '+0);
 
 });
 //this function checks every game piece on the board and assigns a color.
@@ -144,9 +146,9 @@ var part2 = function(){
 
 //start game functions.
 var gameStart = function(){
+  clearBoard();
   if (gameState===0){//checks my dubious game state variable.
   $nextNumber = $setNextNumber(); // Creates the next number that will drop.
-  gameState=1;
   moves=20;//set moves.
   var randomPieces = Math.floor(Math.random()*8+8)//sets how many random pieces will be put on the board.
   getBoard();//gets the fresh board.
@@ -162,6 +164,7 @@ var gameStart = function(){
   $level.text('Level - '+level)
   $nextNumberCell.text('Next - '+$nextNumber);
   counterDiv.text('Score - '+pointsCounter);
+  gameState = 1;
   }
 }
 //this clears the board when the game is over.
@@ -169,7 +172,7 @@ var clearBoard = function(){
   getBoard();
   for (var i=0; i<columnBoard.length;i++){
    for (var j=0; j<columnBoard.length;j++){
-     columnBoard[i][j]='$'
+     columnBoard[i][j]=' '
    }
   }
   pushBoard();
@@ -389,6 +392,7 @@ var animateMatches = function(){
     for (var j = 0; j<rowBoard.length; j++){
       if ((columnBoard[i][j]===rowLengths[j][i])||(columnBoard[i][j]===columnLengths[i][j])) {
         grandCounter=1;
+        $combo.text('Combo - '+(superCounter-1));
         pointsCounter+=1*(superCounter-1);
         animateDiv('.c'+i+'.r'+j)
         collectBreakers.push(i,(j+1),'|')

@@ -24,7 +24,7 @@
     background-color: yellow;
 
 }
-.nextmove, .level , .moves {
+.nextmove, .level , .moves, .combo{
   position: relative;
   width: 200px;
   height: 70px;
