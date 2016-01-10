@@ -14,23 +14,22 @@ var $setNextNumber = function(){
   return $nextNumber
 }
 
-//Here I define the incedious global variables.
+//Here I define the global variables.
 
-var $startButton = $('.myButton') //GameStart button div.
-var $moves = $('.moves') //the div that shows how many moves are left until the next level
-var $level=$('.level') // the div that shows the level of the game
-var $combo=$('.combo') //comboCounter
+var $startButton = $('.myButton') //GameStart button.
+var $moves = $('.moves') //div that shows how many moves are left until the next level
+var $level=$('.level') // div that shows the level of the game
+var $combo=$('.combo') //div that shows the comboCounter
 var $containerDivs = $('.container div'); //the game board divs
 var $nextNumberCell = $('.nextmove'); //the div that shows what the next piece that drops will be
 var counterDiv = $('.points');//the div that displays points
 var pointsCounter = 0;//points counter
-var grandCounter=0; //counter to check if the recursion is needed
-var superCounter=1; //counter of the depth of the recursion
-var noClick = 0;//useless variable
+var rCounter=0; //counter to check if the recursion is needed
+var depthCounter=1; //counter of the depth of the recursion
 var level=1;//level variable
 var moves = 0;//moves variable
-var gameState=0;//dubious game state variable
-
+var gameState=1;//dubious game state variable
+console.log(gameState)
 //this function runs the game start function when the game start button is clicked
   $startButton.click(function(){
     gameStart()
@@ -42,19 +41,11 @@ var gameState=0;//dubious game state variable
     if (gameState===0) {
       return;
     }
-    if (noClick===1) {
-      return;
-      //console.log('test')
-    }
-    noClick = 1;
-    //console.log(noClick)
-    //$containerDivs.html('');
-    var o = $(this);
-    grandCounter=0;//resets the recurtion counter
-    superCounter=1;//resets the depth counter
-    moves-=1;//decreses the moves by one
+    gameState=0
+    rCounter=0;//resets the recurtion counter
+    depthCounter=1;//resets the depth counter
     //this variable and function selects the top cell in a column and places the game piece there.
-    var classes = o.attr('class').split(/\s+/);
+    var classes = $(this).attr('class').split(/\s+/);
     if ($('div.container div.r0.' + classes[1]).text()!==' '){
       return;
     }
@@ -67,8 +58,8 @@ var gameState=0;//dubious game state variable
     $level.text('Level - '+level)
     $nextNumber=$setNextNumber();
     $nextNumberCell.text('Next - '+$nextNumber);
-    noClick = 0; //dubious
-    $combo.text('Combo - '+0);
+    $combo.text('Combo - '+ 0);
+    moves-=1;//decreses the moves by one
 
 });
 //this function checks every game piece on the board and assigns a color.
@@ -113,7 +104,8 @@ var addColor = function(){
 
 //this runs all the functions which run the game.
 var part1 = function(){
-  superCounter+=1//depth +=1
+  gameState=0
+  depthCounter+=1//depth +=1
   getBoard();//gets the game board from the html divs.
   pushAllDown();//pushes the piece that was placed on the board down to the nearest available space.
   //this levels up the game.
@@ -121,25 +113,26 @@ var part1 = function(){
     outtaMoves()
   }
   pushBoard();//pushes the game board to the divs.
-  getBoard();//gets the board again...
+  getBoard();//gets the board.
   createLengths();//create the lengs of rows and columns of the pieces.
-  animateMatches(); //animate some stuff...
+  animateMatches(); //animates the game pieces
   //Sets delay so that animations can finish if its the first time running part2(), or just runs them if setTimeout is set.
-  if (grandCounter>0){
+  if (rCounter>0){
     setTimeout(part2,400);
   } else part2();
 }
 //this is part 2 of the game function. I don't remember why I have it, but it's most likely here for a reason. Maybe...
 var part2 = function(){
+   gameState=0
    deleteMatches();//This function matches game pieces to the lengths of the rows and columns that they reside in. And deltes them.
-   turnToCents();//this one takes dollars and cents and turns then into each other and other game pieces based on the proximity of deletions.
+   turnToCents();//this function pops Dollars and Cents based on the proximity of deletions.
    pushBoard();//pushing the board to the player
    getBoard();//getting the board again.
    pushAllDown();//pushing everyting down.
    counterDiv.text('Score - '+pointsCounter);//updaing the score board. Why not.
    pushBoard();//pushing the board after pushing everything down.
    //re-running part1() if changes were made to the board or clearing the interval for part2().
-   if (grandCounter>0){
+   if (rCounter>0){
      part1()
    }else clearInterval(part2);
  }
@@ -147,7 +140,7 @@ var part2 = function(){
 //start game functions.
 var gameStart = function(){
   clearBoard();
-  if (gameState===0){//checks my dubious game state variable.
+  // if (gameState===0){//checks my dubious game state variable.
   $nextNumber = $setNextNumber(); // Creates the next number that will drop.
   moves=20;//set moves.
   var randomPieces = Math.floor(Math.random()*8+8)//sets how many random pieces will be put on the board.
@@ -159,13 +152,11 @@ var gameStart = function(){
   pushBoard();//push the board to the player.
   part1(); //and run the game on the random board.
   //set all the info!
-  pointsCounter = 0;
   $moves.text('Moves - '+moves)
   $level.text('Level - '+level)
   $nextNumberCell.text('Next - '+$nextNumber);
   counterDiv.text('Score - '+pointsCounter);
-  gameState = 1;
-  }
+  // }
 }
 //this clears the board when the game is over.
 var clearBoard = function(){
@@ -222,7 +213,6 @@ var columnBoard=[]
 var rowBoard = []
 var counter = 0//not sure what this does...
 var collectBreakers=[]//these turn dollars into cents.
-
 // var deleteColMatches = function(countArray,lengthsArray){
 //     var holder = 0
 //   for (var i =0; i <countArray.length; i++){
@@ -265,20 +255,6 @@ var cleanArray = function(array){
        return i === ' ' ? 0 : parseInt(i);
     })
 }
-//funtion moves the game piece down to the most available space.
-var moveDown = function(array){
-    array.push(0)
-    counter=array.length-1;
-    for (var i= array.length-1; i>=0;i--){
-        if (array[i] !== 0) {
-        array[counter] = array[i];
-        array[i] = 0;
-        counter-=1;
-        }
-    }
-    array.shift()
-    return(array)
-}
 //the code snippet below was taken form here: http://viralpatel.net/blogs/jquery-get-text-element-without-child-element/
 //this gets the div data and turns it into arrays.
 var getBoard = function(){
@@ -307,9 +283,25 @@ var pushAllDown=function(){
     moveDown(columnBoard[i]);
   }
 }
-
+//funtion moves the game piece down to the most available space.
+var moveDown = function(array){
+    array.push(0)
+    counter=array.length-1;
+    for (var i= array.length-1; i>=0;i--){
+        if (array[i] !== 0) {
+        array[counter] = array[i];
+        array[i] = 0;
+        counter-=1;
+        }
+    }
+    array.shift()
+    return(array)
+}
 //this function takes the arrays and pushes them into the div.
 var pushBoard = function() {
+  if (columnBoard[0]===undefined){
+    return;
+  }
   for(var i = 6 ; i>=0;i--){
     for (var j = 6; j >=0; j--){
       //$('.r'+i+'.c'+j).text(rowBoard[i][j]);
@@ -352,23 +344,15 @@ var createLengths = function(){
 
 //this one matches the pieces to the lenghts and removes them, if necessary.
 var deleteMatches = function(){
-  grandCounter=0
+  rCounter=0
   for (var i =0; i <rowBoard.length; i++){
     for (var j = 0; j<rowBoard.length; j++){
       if (columnBoard[i][j]===rowLengths[j][i]) {
           columnBoard[i][j] = 0;
-          grandCounter=1
-          // collectBreakers.push(i,(j+1),'|')
-          // collectBreakers.push(i,(j-1),'|')
-          // collectBreakers.push((i+1),j,'|')
-          // collectBreakers.push((i-1),j,'|')
+          rCounter=1
         }if (columnBoard[i][j]===columnLengths[i][j]){
           columnBoard[i][j] = 0;
-          grandCounter=1
-          // collectBreakers.push(i,(j+1),'|')
-          // collectBreakers.push(i,(j-1),'|')
-          // collectBreakers.push((i+1),j,'|')
-          // collectBreakers.push((i-1),j)
+          rCounter=1
       }
     }
   }
@@ -391,9 +375,10 @@ var animateMatches = function(){
   for (var i =0; i <rowBoard.length; i++){
     for (var j = 0; j<rowBoard.length; j++){
       if ((columnBoard[i][j]===rowLengths[j][i])||(columnBoard[i][j]===columnLengths[i][j])) {
-        grandCounter=1;
-        $combo.text('Combo - '+(superCounter-1));
-        pointsCounter+=1*(superCounter-1);
+        rCounter=1;
+        $combo.text('Combo - '+(depthCounter-1));
+        console.log(depthCounter)
+        pointsCounter+=1*(depthCounter-1);
         animateDiv('.c'+i+'.r'+j)
         collectBreakers.push(i,(j+1),'|')
         collectBreakers.push(i,(j-1),'|')
@@ -405,24 +390,49 @@ var animateMatches = function(){
       }
 
       //this one turns dollars into cents and cents into game pieces.
+var dollarCounter =0;
 var turnToCents = function(){
   var dollarArray = cleanBreakers(collectBreakers)
-  //console.log(dollarArray)
-  //console.log(columnBoard)
+  gameState=0
+  // var testingtesting=0
+  // for (var i =0; i <rowBoard.length; i++){
+  //   for (var j = 0; j<rowBoard.length; j++){
+  //     for (var k in dollarArray){
+  //       if(i === parseInt(dollarArray[k][0]) && j === parseInt(dollarArray[k][1])&&columnBoard[dollarArray[k][0]][dollarArray[k][1]]==="$"){
+  //         // console.log('Match! for -',i,j)
+  //         testingtesting+=1
+  //         }
+  //         if (testingtesting>1){
+  //             columnBoard[dollarArray[k][0]][dollarArray[k][1]]=Math.floor(Math.random()*7+1)
+  //             // animateDiv('.c'+dollarArray[k][0]+'.r'+[dollarArray[k][1]])
+  //               }
+  //         // console.log('testingtesting -',testingtesting)
+  //           }
+  //       }
+  //       testingtesting=0
+  //     }
   for (var i in dollarArray){
     if(columnBoard[dollarArray[i][0]][dollarArray[i][1]]==='¢'){
       columnBoard[dollarArray[i][0]][dollarArray[i][1]]=Math.floor(Math.random()*7+1)
       }
     }
-  for (var i in dollarArray){
-    if(columnBoard[dollarArray[i][0]][dollarArray[i][1]]==='$'){
-      columnBoard[dollarArray[i][0]][dollarArray[i][1]]='¢'
-      animateDiv('.c'+dollarArray[i][0]+'.r'+[dollarArray[i][1]])
+    for (var i in dollarArray){
+      if(columnBoard[dollarArray[i][0]][dollarArray[i][1]]==='$'){
+        columnBoard[dollarArray[i][0]][dollarArray[i][1]]='¢'
+        animateDiv('.c'+dollarArray[i][0]+'.r'+[dollarArray[i][1]])
+        }
       }
-    }collectBreakers=[]
+    collectBreakers=[]
+    gameState=1
   }
 
 
 
+    // for (var i in dollarArray){
+    //   if(columnBoard[dollarArray[i][0]][dollarArray[i][1]]==='$'){
+    //     columnBoard[dollarArray[i][0]][dollarArray[i][1]]='¢'
+    //     animateDiv('.c'+dollarArray[i][0]+'.r'+[dollarArray[i][1]])
+    //     }
+    //   }
 
 });//the END. omg....
