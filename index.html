@@ -2,27 +2,40 @@
 <html lang="en">
 <head>
   <link rel="stylesheet" href="style.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-  <link href='https://fonts.googleapis.com/css?family=Monoton' rel='stylesheet' type='text/css'>
-  <link href='https://fonts.googleapis.com/css?family=Fredericka+the+Great' rel='stylesheet' type='text/css'>
-  <script src="script.js"></script>
   <meta charset="UTF-8">
   <title>7</title>
 </head>
 <body>
-  <div class="nextmove">
-  </div>
-  <div class="points">
-  </div>
-  <div class="level">
-  </div>
-  <div class="moves">
-  </div>
-  <div class="combo">
-  </div>
-  <p>
+  <div class='title'>Dollars and Cents</div>
+  <a href="#" class="myButton" id='min_button'>Start Game</a>
+
+  <div class="info_wrapper">
     <a href="#" class="myButton">Start Game</a>
-  </p>
+    <br>
+    <div class="nextmove">Next - 0</div>
+    <div class="level">Level - 00</div>
+    <div class="moves">Moves - 00</div>
+    <div class="combo">Combo - 00</div>
+    <div class="points">Points - 000</div>
+    <div class='how'>How to Play?</div>
+  </div>
+  <div class="help">
+    <p>
+      The goal of the game is to get as many points as possible by removing numbered tokens from the board. Tokens are removed by matching the amount of tokens in a row or column where the token is located to the number of the token.
+    </p>
+    <p>
+      If after a token is removed the board allows for additional tokens to be removed the combo counter increases and the player gets more points. The combo meter shows last moves highest reached combo level.
+    </p>
+    <p>
+      Dollars and Cents that appear on the board are there to impede player progress. Dollars are turned into Cents when a token next to it is removed, and Cents are turned into tokens.
+    </p>
+    <p>
+      You have limited amount of moves per level, after which the all the tokens will move up one row and the bottom row will be filled with Dollars, level will go up and points administered.
+    </p>
+    <p>
+      The game is over when the board is full or a new level is reached when the top row has any game pieces in it, moving them outside the board.
+    </p>
+  </div>
   <div class="container" id='container'>
     <div class="r0 c0" id = 'col1'> </div>
     <div class="r0 c1" id = 'col2'> </div>
@@ -73,5 +86,17 @@
     <div class="r6 c4" id = 'col5'> </div>
     <div class="r6 c5" id = 'col6'> </div>
     <div class="r6 c6" id = 'col7'> </div>
+    <div class="min_wrapper">
+      <span class="nextmove_min">Next - 0</span>
+      <span class="moves_min">Moves - 00</span>
+      <span class="points_min">Points - 000</span>
+    </div>
+  </div>
+  </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <link href='https://fonts.googleapis.com/css?family=Monoton' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Fredericka+the+Great' rel='stylesheet' type='text/css'>
+    <script src='parallax/parallax.js'></script>
+    <script src="script.js"></script>
 </body>
 </html>

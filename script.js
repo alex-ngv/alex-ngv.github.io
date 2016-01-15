@@ -1,7 +1,5 @@
 //Dollars and Cents
 //BY ALEXANDER NAGAEV @anagaev@gmail.com
-//console.log(gameState)
-
 //Here I load the window and define the first function, the one that gets a random number for the game.
 
 $(document).ready(function(){
@@ -14,54 +12,98 @@ var $setNextNumber = function(){
   return $nextNumber
 }
 
+// This animates the help screen.
+$('.help').hide()
+$( ".how" ).hover(
+  function() {
+    $(".help").show();
+    $('.help').animate({
+      width: '400px'
+    })
+  },
+  function(){
+    $('.help').animate({
+      width: '0px'
+    })
+    setTimeout(
+      function(){
+        $(".help").hide();
+      }, 500
+    );
+  }
+);
+
 //Here I define the global variables.
 
 var $startButton = $('.myButton') //GameStart button.
-var $moves = $('.moves') //div that shows how many moves are left until the next level
+var $moves = $('.moves, .moves_min') //div that shows how many moves are left until the next level
 var $level=$('.level') // div that shows the level of the game
 var $combo=$('.combo') //div that shows the comboCounter
 var $containerDivs = $('.container div'); //the game board divs
-var $nextNumberCell = $('.nextmove'); //the div that shows what the next piece that drops will be
-var counterDiv = $('.points');//the div that displays points
+var $nextNumberCell = $('.nextmove, .nextmove_min'); //the div that shows what the next piece that drops will be
+var counterDiv = $('.points, .points_min');//the div that displays points
 var pointsCounter = 0;//points counter
 var rCounter=0; //counter to check if the recursion is needed
 var depthCounter=1; //counter of the depth of the recursion
 var level=1;//level variable
 var moves = 0;//moves variable
-var gameState=1;//dubious game state variable
-console.log(gameState)
+var gameState = 1;//used to counter double clicking
+var firstMove = 0;//used to reset points
 //this function runs the game start function when the game start button is clicked
   $startButton.click(function(){
     gameStart()
   });
 
-//this is what happens when the board is clicked.
-  $containerDivs.click( function() {
-    //these 2 funcitions are dubious at best and i will not explain them
-    if (gameState===0) {
-      return;
-    }
-    gameState=0
-    rCounter=0;//resets the recurtion counter
-    depthCounter=1;//resets the depth counter
-    //this variable and function selects the top cell in a column and places the game piece there.
-    var classes = $(this).attr('class').split(/\s+/);
-    if ($('div.container div.r0.' + classes[1]).text()!==' '){
-      return;
-    }
-    $('div.container div.r0.' + classes[1]).text($nextNumber);
-    //this is where the game functions begin
-    part1()
-    //and end...
-    //here I set the next move and update display divs.
-    $moves.text('Moves - '+moves)
-    $level.text('Level - '+level)
-    $nextNumber=$setNextNumber();
-    $nextNumberCell.text('Next - '+$nextNumber);
-    $combo.text('Combo - '+ 0);
-    moves-=1;//decreses the moves by one
+  // this shows the next move to appear on the board on hover, and plays the game when is clicked
+  $containerDivs.hover(
+    function(){
+      if (gameState===0) {
+        return;
+      }
+      var classes = $(this).attr('class').split(/\s+/);
+      if ($('div.container div.r0.' + classes[1]).css("background-color") !== "rgb(255, 250, 250)"){
+        gameState=1;
+        return;
+      }
+      $('div.container div.r0.' + classes[1]).text($nextNumber)
+    },
+    function(){
+      if (gameState===0) {
+        return;
+      }
+      var classes = $(this).attr('class').split(/\s+/);
+      if ($('div.container div.r0.' + classes[1]).css("background-color") !== "rgb(255, 250, 250)"){
+        gameState=1;
+        return;
+      }
+      $('div.container div.r0.' + classes[1]).text(" ")
+    }).click(function(){
+      if (gameState===0) {
+        return;
+      }
+      gameState = 0;
+      rCounter = 0; //resets the recurtion counter
+      depthCounter = 1; //resets the depth counter
+      //this variable and function selects the top cell in a column and places the game piece there.
+      var classes = $(this).attr('class').split(/\s+/);
+      if ($('div.container div.r0.' + classes[1]).css("background-color") !== "rgb(255, 250, 250)"){
+        gameState=1;
+        return;
+      }
+      $('div.container div.r0.' + classes[1]).text($nextNumber);
+      //this is where the game functions begin
+      moves-=1;//decreses the moves by one
+      part1()
+      //and end...
+      //here I set the next move and update display divs.
+      $moves.text('Moves - '+ pad10(moves));
+      $level.text('Level - '+pad10(level));
+      $nextNumber=$setNextNumber();
+      $nextNumberCell.text('Next - '+$nextNumber);
+      $combo.text('Combo - 00');
+    })
 
-});
+
 //this function checks every game piece on the board and assigns a color.
 var addColor = function(){
   for (var i =0; i <rowBoard.length; i++){
@@ -109,8 +151,8 @@ var part1 = function(){
   getBoard();//gets the game board from the html divs.
   pushAllDown();//pushes the piece that was placed on the board down to the nearest available space.
   //this levels up the game.
-  if (moves ===0) {
-    outtaMoves()
+  if (moves === 0) {
+    if (outtaMoves()==='Game Over'){return}
   }
   pushBoard();//pushes the game board to the divs.
   getBoard();//gets the board.
@@ -129,35 +171,45 @@ var part2 = function(){
    pushBoard();//pushing the board to the player
    getBoard();//getting the board again.
    pushAllDown();//pushing everyting down.
-   counterDiv.text('Score - '+pointsCounter);//updaing the score board. Why not.
+   counterDiv.text('Score - '+ pad100(pointsCounter));//updaing the score board. Why not.
    pushBoard();//pushing the board after pushing everything down.
    //re-running part1() if changes were made to the board or clearing the interval for part2().
    if (rCounter>0){
      part1()
    }else clearInterval(part2);
  }
-
+ function pad10(n) {
+     return (n < 10) ? ("0" + n) : n;
+ }
+ function pad100(n) {
+    return (n > 100) ? (n) : ((n < 10) ? ("00" + n) : ("0"+n));
+}
 //start game functions.
 var gameStart = function(){
-  clearBoard();
-  // if (gameState===0){//checks my dubious game state variable.
-  $nextNumber = $setNextNumber(); // Creates the next number that will drop.
-  moves=20;//set moves.
-  var randomPieces = Math.floor(Math.random()*8+8)//sets how many random pieces will be put on the board.
-  getBoard();//gets the fresh board.
-  //assign random pieces
-  for (var i=0; i<=randomPieces; i++){
-    columnBoard[Math.floor(Math.random()*6+1)][Math.floor(Math.random()*6+1)]=Math.floor(Math.random()*6+1);
-  }
-  pushBoard();//push the board to the player.
-  part1(); //and run the game on the random board.
-  //set all the info!
-  $moves.text('Moves - '+moves)
-  $level.text('Level - '+level)
-  $nextNumberCell.text('Next - '+$nextNumber);
-  counterDiv.text('Score - '+pointsCounter);
-  // }
-}
+  if (moves!==0){
+    return}
+  else{
+    clearBoard();
+    $nextNumber = $setNextNumber(); // Creates the next number that will drop.
+    moves=2;//set moves.
+    var randomPieces = Math.floor(Math.random()*8+8)//sets how many random pieces will be put on the board.
+    getBoard();//gets the fresh board.
+    //assign random pieces
+    for (var i=0; i<=randomPieces; i++){
+      columnBoard[Math.floor(Math.random()*6+1)][Math.floor(Math.random()*6+1)]=Math.floor(Math.random()*6+1);
+    }
+    pushBoard();//push the board to the player.
+    part1(); //and run the game on the random board.
+    //set all the info!
+    moves=2;
+    level=0;
+    pointsCounter=0;
+    $moves.text('Moves - ' + pad10(moves))
+    $level.text('Level - ' + pad10(level))
+    $nextNumberCell.text('Next - '+ $nextNumber);
+    counterDiv.text('Score - '+ pad100(pointsCounter));
+  };
+};
 //this clears the board when the game is over.
 var clearBoard = function(){
   getBoard();
@@ -167,31 +219,48 @@ var clearBoard = function(){
    }
   }
   pushBoard();
-  gameState=0;
-}
+  gameState=1;
+};
+ var gameOver = function(){
+   $('div.container div.r2.c0').text("G")
+   $('div.container div.r2.c1').text("A")
+   $('div.container div.r2.c2').text("M")
+   $('div.container div.r2.c3').text("E")
+   $('div.container div.r3.c3').text("O")
+   $('div.container div.r3.c4').text("V")
+   $('div.container div.r3.c5').text("E")
+   $('div.container div.r3.c6').text("R")
+   console.log('over')
+ };
 
 //this function moves all game pieces up one row and fills the bottow row with DOLLARS. A prize for getting to the next level.
  var outtaMoves = function(){
-     pushBoard();
-     getBoard();
-     for (var l=0;l<rowBoard.length;l++){
-       if (rowBoard[0][l]!==0){
-       clearBoard()
-       gameState=0}
-     }
-     level+=1
-     moves=20-level
-     for (var i=0; i<columnBoard.length;i++){
-      for (var j=0; j<7;j++){
-        columnBoard[i][j]=columnBoard[i][j+1]
-        animateDiv('.c'+i+'.r'+j)
-      }}
-      for (var k=0; k<columnBoard.length;k++){
-         columnBoard[k][6]='$'
-         //animateDiv('.c'+k+'.r6')//this doubles the animation.
-      }
-     pushBoard();
-     getBoard();
+   pushBoard();
+   getBoard();
+   for (var l=0;l<rowBoard.length;l++){
+     if (rowBoard[0][l]!==0){
+       clearBoard();
+       moves=0;
+       gameState=1;
+       gameOver();
+       debugger;
+       return 'Game Over';
+     };
+   };
+   level += 1;
+   pointsCounter += level * 25;
+   moves=2;
+   for (var i=0; i<columnBoard.length;i++){
+    for (var j=0; j<7;j++){
+      columnBoard[i][j]=columnBoard[i][j+1]
+      animateDiv('.c'+i+'.r'+j)
+    }}
+    for (var k=0; k<columnBoard.length;k++){
+       columnBoard[k][6]='$'
+       //animateDiv('.c'+k+'.r6')//this doubles the animation.
+    }
+   pushBoard();
+   getBoard();
  }
 
 //this tiny function animates a div.
@@ -276,6 +345,7 @@ var getBoard = function(){
     columnBoard.push(cb);
     rowBoard.push(rb)
   }
+  console.log('get')
 }
 //this one moves every column down.
 var pushAllDown=function(){
@@ -306,11 +376,10 @@ var pushBoard = function() {
     for (var j = 6; j >=0; j--){
       //$('.r'+i+'.c'+j).text(rowBoard[i][j]);
       if(columnBoard[i][j]!==0){
-        //console.log(columnBoard[i][j])
-        //console.log()
         $('.c'+i+'.r'+j).text(columnBoard[i][j]);
       } else $('.c'+i+'.r'+j).text(' ')
     }
+    console.log('push')
   }
   addColor();
   rowBoard=[];
@@ -376,8 +445,8 @@ var animateMatches = function(){
     for (var j = 0; j<rowBoard.length; j++){
       if ((columnBoard[i][j]===rowLengths[j][i])||(columnBoard[i][j]===columnLengths[i][j])) {
         rCounter=1;
-        $combo.text('Combo - '+(depthCounter-1));
-        console.log(depthCounter)
+        $combo.text('Combo - '+pad10((depthCounter-1)));
+        //console.log(depthCounter)
         pointsCounter+=1*(depthCounter-1);
         animateDiv('.c'+i+'.r'+j)
         collectBreakers.push(i,(j+1),'|')
