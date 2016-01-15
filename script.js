@@ -281,28 +281,20 @@ var columnBoard=[]
 var rowBoard = []
 var counter = 0//not sure what this does...
 var collectBreakers=[]//these turn dollars into cents.
-// var deleteColMatches = function(countArray,lengthsArray){
-//     var holder = 0
-//   for (var i =0; i <countArray.length; i++){
-//     for (var j = 0; j<countArray.length; j++){
-//       holder = countArray[i][j]===lengthsArray[j][i]? 0:countArray[i][j]
-//       countArray[i][j] = holder
-//     }
-//   }
-//   return countArray
-// }
-//this function i dont remember what it does...
+
+
+
+//these functon gets the lenghts of the rows and columns.
 var countTouch = function(array,num) {
     var sum = []
     if (array[num]===0){
-        return 'poop';
+        return;
     } for (var i = num; (array[i] !== 0 && array[i]!== undefined); i++ ){
         sum.push(array[i])
     } for (var j = num-1; (array[j] !== 0 && array[j]!== undefined); j-- ){
         sum.push(array[j])
     } return sum.length;
 };
-//this functon gets the lenghts of the rows and columns.
 var getLengths = function(array){
     var lengths=[];
     for (var i=0; i <7; i++){
@@ -395,19 +387,6 @@ var createLengths = function(){
     }
   }
 
-// var difference = function(arrNumbers,arrLengths) {
-//     var newArr=[]
-//     for (var i = 0; i<arrNumbers.length; i++) {
-//         if (arrNumbers[i] === arrLengths[i]){
-//             newArr[i]=0
-//         } else newArr[i]=arrNumbers[i]
-//     } return newArr
-//   }
-// var deleteRowMatches = function(){
-//   for (var i = 0; i < rowBoard.length; i++){
-//     columnBoard[i]=difference(columnBoard[i],columnLengths[i])
-//     }
-//   }
 
 
 //this one matches the pieces to the lenghts and removes them, if necessary.
@@ -462,23 +441,7 @@ var dollarCounter =0;
 var turnToCents = function(){
   var dollarArray = cleanBreakers(collectBreakers)
   gameState=0
-  // var testingtesting=0
-  // for (var i =0; i <rowBoard.length; i++){
-  //   for (var j = 0; j<rowBoard.length; j++){
-  //     for (var k in dollarArray){
-  //       if(i === parseInt(dollarArray[k][0]) && j === parseInt(dollarArray[k][1])&&columnBoard[dollarArray[k][0]][dollarArray[k][1]]==="$"){
-  //         // console.log('Match! for -',i,j)
-  //         testingtesting+=1
-  //         }
-  //         if (testingtesting>1){
-  //             columnBoard[dollarArray[k][0]][dollarArray[k][1]]=Math.floor(Math.random()*7+1)
-  //             // animateDiv('.c'+dollarArray[k][0]+'.r'+[dollarArray[k][1]])
-  //               }
-  //         // console.log('testingtesting -',testingtesting)
-  //           }
-  //       }
-  //       testingtesting=0
-  //     }
+
   for (var i in dollarArray){
     if(columnBoard[dollarArray[i][0]][dollarArray[i][1]]==='¢'){
       columnBoard[dollarArray[i][0]][dollarArray[i][1]]=Math.floor(Math.random()*7+1)
@@ -495,12 +458,6 @@ var turnToCents = function(){
   }
 
 
-
-    // for (var i in dollarArray){
-    //   if(columnBoard[dollarArray[i][0]][dollarArray[i][1]]==='$'){
-    //     columnBoard[dollarArray[i][0]][dollarArray[i][1]]='¢'
-    //     animateDiv('.c'+dollarArray[i][0]+'.r'+[dollarArray[i][1]])
-    //     }
     //   }
 
 });//the END. omg....
