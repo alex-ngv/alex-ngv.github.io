@@ -191,7 +191,6 @@ var gameStart = function(){
   else{
     clearBoard();
     $nextNumber = $setNextNumber(); // Creates the next number that will drop.
-    moves=16;//set moves.
     var randomPieces = Math.floor(Math.random()*8+8)//sets how many random pieces will be put on the board.
     getBoard();//gets the fresh board.
     //assign random pieces
@@ -201,8 +200,8 @@ var gameStart = function(){
     pushBoard();//push the board to the player.
     part1(); //and run the game on the random board.
     //set all the info!
-    moves=15-level;
-    level=0;
+    moves=16;
+    level=1;
     pointsCounter=0;
     $moves.text('Moves - ' + pad10(moves))
     $level.text('Level - ' + pad10(level))
@@ -249,7 +248,7 @@ var clearBoard = function(){
    };
    level += 1;
    pointsCounter += level * 25;
-   moves=2;
+   moves=15-level;
    for (var i=0; i<columnBoard.length;i++){
     for (var j=0; j<7;j++){
       columnBoard[i][j]=columnBoard[i][j+1]

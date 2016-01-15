@@ -42,7 +42,7 @@ body{
 }
 .info_wrapper{
   position: absolute;
-  top: 15%;
+  top: 25%;
 }
 .help{
   font-family: 'Fredericka the Great', cursive;
@@ -67,10 +67,10 @@ body{
   right: auto;
   border-radius: 20px;
   width: 200px;
-  height: 70px;
+  height: 50px;
+  line-height: 47px;
   border: solid black;
   text-align: center;
-  line-height: 65px;
   font-family: 'Fredericka the Great', cursive;
   font-size: 40px;
   color: black;
@@ -86,7 +86,7 @@ body{
   position: absolute;
   font-family: 'Fredericka the Great', cursive;
   width: 200px;
-  height: 70px;
+  height: 47px;
   font-size: 2em;
   text-align: right;
   background-color: white;
@@ -94,15 +94,15 @@ body{
 }
 .nextmove{
   width: 175px;
-  height: 70px;
+  height: 47px;
 }
 .combo{
   width: 225px;
-  height: 70px;
+  height: 47px;
 }
 .points {
   width: 250px;
-  height: 70px;
+  height: 47px;
 }
 
 #background {
