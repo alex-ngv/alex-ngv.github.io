@@ -229,7 +229,6 @@ var clearBoard = function(){
    $('div.container div.r3.c4').text("V")
    $('div.container div.r3.c5').text("E")
    $('div.container div.r3.c6').text("R")
-   console.log('over')
  };
 
 //this function moves all game pieces up one row and fills the bottow row with DOLLARS. A prize for getting to the next level.
@@ -242,7 +241,6 @@ var clearBoard = function(){
        moves=0;
        gameState=1;
        gameOver();
-       debugger;
        return 'Game Over';
      };
    };
@@ -272,7 +270,7 @@ var animateDiv = function(div){
     );
 }
 //this is where i started writing this.
-console.log('lets DO THIS')
+console.log('Lets do this!')
 
 //these empty arrays hold the game board and the lenghts of the boards.
 var columnLengths=[]
@@ -336,7 +334,6 @@ var getBoard = function(){
     columnBoard.push(cb);
     rowBoard.push(rb)
   }
-  console.log('get')
 }
 //this one moves every column down.
 var pushAllDown=function(){
@@ -370,7 +367,6 @@ var pushBoard = function() {
         $('.c'+i+'.r'+j).text(columnBoard[i][j]);
       } else $('.c'+i+'.r'+j).text(' ')
     }
-    console.log('push')
   }
   addColor();
   rowBoard=[];
