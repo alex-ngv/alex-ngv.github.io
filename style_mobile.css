@@ -1,16 +1,11 @@
-body{
-  height: 100%;
-  width: auto;
-  text-align: center;
-  overflow-x: hidden;
-  overflow-y: hidden;
-  cursor:default;
+.info_wrapper {
+    display: none;
 }
 .container {
   position: fixed;
-  left: 33%;
-  width: 469px;
-  height: 469px;
+  left: 9%;
+  width: 760px;
+  height: 790px;
   margin: 50px auto;
   border: solid gray 15px;
   border-radius: 45px;
@@ -19,102 +14,30 @@ body{
 }
 .c1, .c2, .c3, .c4, .c5, .c6, .c0{
   color: #0A2A1B;
-  width: 65px;
-  height: 65px;
+  width: 105px;
+  height: 105px;
   float: left;
   box-sizing: border-box;
   text-align: center;
-  line-height: 65px;
+  line-height: 100px;
   font-family: 'Fredericka the Great', cursive;
-  font-size: 75px;
-  border-radius: 45px;
+  font-size: 7em;
+  border-radius: 65px;
   margin: 1px;
+}
+.min_wrapper{
+  line-height: 50px;
+  display: inline;
+  font-family: 'Fredericka the Great', cursive;
+  font-size: 3em;
 }
 .title{
   font-family: 'Fredericka the Great', cursive;
-  font-size: 4em;
+  font-size: 3em;
 }
 #min_button{
-  display: none;
+  display: inline;
 }
-#col:hover {
-    background-color: yellow;
-}
-.info_wrapper{
-  position: absolute;
-  top: 15%;
-}
-.help{
-  font-family: 'Fredericka the Great', cursive;
-  text-align: left;
-  position: absolute;
-  top: 18.7%;
-  right: 0%;
-  width: 0px;
-  height: 490px;
-  border-radius: 10px 0px 0px 10px;
-  border-top-style: solid;
-  /*border-right-style: solid;*/
-  border-bottom-style: solid;
-  border-left-style: solid;
-  padding: 3px;
-  z-index: 1;
-  background-color: white;
-}
- .nextmove, .level , .moves, .combo, .points{
-   margin-bottom: 5px;
-  /*margin: 0 auto;*/
-  right: auto;
-  border-radius: 20px;
-  width: 200px;
-  height: 70px;
-  border: solid black;
-  text-align: center;
-  line-height: 65px;
-  font-family: 'Fredericka the Great', cursive;
-  font-size: 40px;
-  color: black;
-  display: block;
-  text-align: left;
-  padding: 2px;
-  text-align: center;
-}
-.min_wrapper{
-  display: none
-}
-.how {
-  position: absolute;
-  font-family: 'Fredericka the Great', cursive;
-  width: 200px;
-  height: 70px;
-  font-size: 2em;
-  text-align: right;
-  background-color: white;
-
-}
-.nextmove{
-  width: 175px;
-  height: 70px;
-}
-.combo{
-  width: 225px;
-  height: 70px;
-}
-.points {
-  width: 250px;
-  height: 70px;
-}
-
-#background {
-  position: absolute;
-   top: 0;
-   left: 0;
-   bottom: 0;
-   right: 0;
-   z-index: -1;
-}
-
-
 .myButton {
 	/*-moz-box-shadow:inset 0px 1px 0px 0px #ffffff;
 	-webkit-box-shadow:inset 0px 1px 0px 0px #ffffff;
@@ -157,7 +80,3 @@ body{
 	position:relative;
 	top:1px;
 }
-
-/*@media screen and (max-width: 750px) {
-
-}*/
