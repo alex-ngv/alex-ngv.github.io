@@ -230,6 +230,7 @@ var clearBoard = function(){
    $('div.container div.r3.c4').text("V")
    $('div.container div.r3.c5').text("E")
    $('div.container div.r3.c6').text("R")
+   gameState=0;
  };
 
 //this function moves all game pieces up one row and fills the bottow row with DOLLARS. A prize for getting to the next level.
@@ -278,12 +279,12 @@ var columnLengths=[]
 var rowLengths =[]
 var columnBoard=[]
 var rowBoard = []
-var counter = 0//not sure what this does...
+var arrayCounter = 0//helper to for the function that pushes the game pieces down.
 var collectBreakers=[]//these turn dollars into cents.
 
 
 
-//these functon gets the lenghts of the rows and columns.
+//these functons get the lenghts of the rows and columns.
 var countTouch = function(array,num) {
     var sum = []
     if (array[num]===0){
@@ -345,12 +346,12 @@ var pushAllDown=function(){
 //funtion moves the game piece down to the most available space.
 var moveDown = function(array){
     array.push(0)
-    counter=array.length-1;
+    arrayCounter=array.length-1;
     for (var i= array.length-1; i>=0;i--){
         if (array[i] !== 0) {
-        array[counter] = array[i];
+        array[arrayCounter] = array[i];
         array[i] = 0;
-        counter-=1;
+        arrayCounter-=1;
         }
     }
     array.shift()
